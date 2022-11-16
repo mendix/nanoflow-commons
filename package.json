@@ -1,12 +1,12 @@
 {
-  "name": "nanoflow-actions-native",
+  "name": "@mendix/nanoflow-commons",
   "moduleName": "Nanoflow Commons",
   "version": "2.6.1",
   "license": "Apache-2.0",
   "copyright": "© Mendix Technology BV 2022. All rights reserved.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mendix/widgets-resources.git"
+    "url": "https://github.com/mendix/nanoflow-commons.git"
   },
   "marketplace": {
     "minimumMXVersion": "9.10.0.36429",
@@ -17,21 +17,24 @@
     "branchName": "main"
   },
   "scripts": {
-    "build": "rollup --config ../../../configs/jsactions/rollup.config.js --configProject nanoflowcommons",
-    "lint": "eslint --config ../../../.eslintrc.js --ext .jsx,.js,.ts,.tsx src/",
-    "release": "npm run build",
-    "release:marketplace": "node ../../../scripts/release/marketplaceRelease.js"
+    "build": "rollup --config rollup.config.mjs --configProject nanoflowcommons",
+    "lint": "eslint --config .eslintrc.js --ext .jsx,.js,.ts,.tsx src/",
+    "release": "npm run build"
+  },
+  "overrides": {
+    "react": "~17.0.2",
+    "react-dom": "~17.0.2"
   },
   "dependencies": {
     "@react-native-community/async-storage": "1.12.1",
     "@react-native-community/geolocation": "2.0.2",
-    "react-native-geocoder": "0.5.0",
-    "react-native-geolocation-service": "5.2.0",
     "invariant": "^2.2.4",
-    "js-base64": "~3.7.2"
+    "js-base64": "~3.7.2",
+    "react-native-geocoder": "0.5.0",
+    "react-native-geolocation-service": "5.2.0"
   },
   "devDependencies": {
-    "@mendix/pluggable-widgets-tools": ">=8.9.2",
+    "@mendix/pluggable-widgets-tools": "^9.18.0",
     "eslint": "^7.20.0",
     "rollup": "^2.68.0"
   }
