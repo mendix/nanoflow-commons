@@ -1,0 +1,9 @@
+documentation:
+  - all: ["*.md"]
+Core:
+  - .github/**/*
+  - .husky/**/*
+Source:
+  - src/**/*
+test:
+  - all: ["*.spec.*"]
