@@ -17,12 +17,12 @@ jobs:
           submodules: false
       - name: "Defining Environment Variables"
         id: variables
-        run: echo "tag=$(git tag --points-at HEAD)" >> $GITHUB_OUTPUT
+        run: echo "tag=$(git tag --points-at HEAD)" >> ${{ runner.os == 'Windows' && '$env:GITHUB_ENV' || '$GITHUB_ENV' }}
       - name: "Defining scope"
         uses: jungwinter/split@c185fe95439c136a8788b7f700bd5275920d7109 # v1
         id: scope
         with:
-          msg: "${{ steps.variables.outputs.tag }}"
+          msg: "${{ env.tag }}"
           seperator: "-v"
       - name: "Defining node version"
         uses: actions/setup-node@1f8c6b94b26d0feae1e387ca63ccbdc44d27b561 # v2
