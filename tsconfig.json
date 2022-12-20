@@ -1,7 +1,9 @@
 {
     "extends": "@mendix/pluggable-widgets-tools/configs/tsconfig.base",
+    "include": ["./src", "./typings"],
     "compilerOptions": {
         "outDir": "dist/tsc",
+        "baseUrl": ".",
         "target": "es2017",
         "lib": ["es2017", "DOM"],
         "types": ["mendix-client", "big.js", "react-native"],
@@ -11,8 +13,5 @@
         "esModuleInterop": true,
         "removeComments": false,
         "newLine": "CRLF"
-    },
-    "baseUrl": "./src",
-    "include": ["./"],
-    "exclude": []
+    }
 }

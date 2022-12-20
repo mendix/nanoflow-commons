@@ -10,26 +10,19 @@ import command from "rollup-plugin-command";
 import { promisify } from "util";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 import typescript from "@rollup/plugin-typescript";
-import rpcd from "@mendix/pluggable-widgets-tools/configs/rollup-plugin-collect-dependencies.js";
-import rollupHelpers from "@mendix/pluggable-widgets-tools/configs/helpers/rollup-helper.js";
+import { collectDependencies } from "./rollup-plugin-collect-dependencies";
+import { licenseCustomTemplate, copyLicenseFile } from "./rollup-helper";
 import { bigJsImportReplacer } from "./rollup-plugin-bigjs-import-replacer.mjs";
-const { collectDependencies } = rpcd;
-const {
-    licenseCustomTemplate,
-    copyLicenseFile
-} = rollupHelpers;
 const { red, yellow } = colors;
 
 const cwd = process.cwd();
 
 export default async args => {
-    const jsActionTargetFolder = `javascriptsource/${args.configProject ?? "nativemobileresources"}/actions`;
+    const jsActionTargetFolder = `javascriptsource/nanoflowcommons/actions`;
     const result = [];
     const posixPath = join(cwd, "src", "**/*.ts").split(sep).join(posix.sep); // Always use forward slashes
     const files = await fg([posixPath]); // fast-glob only works with forward slashes
     const outDir = join(cwd, "dist");
-    const isWeb = args.configEnv === "web";
-
     const nodeResolvePlugin = nodeResolve({ preferBuiltins: false, mainFields: ["module", "browser", "main"] });
     const typescriptPlugin = typescript({
         noEmitOnError: false,
@@ -56,7 +49,7 @@ export default async args => {
             plugins: [
                 i === 0 ? clear({ targets: [outDir] }) : null,
                 collectDependencies({
-                    copyJsModules: !isWeb,
+                    copyJsModules: true,
                     onlyNative: false,
                     outputDir: outDir,
                     widgetName: fileOutput,
@@ -82,25 +75,12 @@ export default async args => {
                     ? command([
                           async () => copyLicenseFile(cwd, outDir),
                           async () => {
-                              if (!isWeb) {
-                                  if (args.configProject === "nativemobileresources") {
-                                      // `fbjs/lib/invariant` is being used silently by @react-native-community/cameraroll; it is not listed as a dependency nor peerDependency.
-                                      // https://github.dev/react-native-cameraroll/react-native-cameraroll/blob/7c269a837d095a2cb5f4ce13b54ab3060455b17f/js/CameraRoll.js#L14
-                                      const path = join(outDir, "node_modules", "fbjs", "lib");
-                                      mkdirSync(path, { recursive: true });
-                                      await copyAsync(
-                                          join(dirname(require.resolve("fbjs")), "lib", "invariant.js"),
-                                          join(path, "invariant.js")
-                                      );
-                                  } else if (args.configProject === "nanoflowcommons") {
-                                      // `invariant` is being used silently by @react-native-community/geolocation; it is not listed as a dependency nor peerDependency.
-                                      // https://github.dev/react-native-geolocation/react-native-geolocation/blob/1786929f2be581da91082ff857c2393da5e597b3/js/implementation.native.js#L13
-                                      await copyAsync(
-                                          dirname(require.resolve("invariant")),
-                                          join(outDir, "node_modules", "invariant")
-                                      );
-                                  }
-                              }
+                              // `invariant` is being used silently by @react-native-community/geolocation; it is not listed as a dependency nor peerDependency.
+                              // https://github.dev/react-native-geolocation/react-native-geolocation/blob/1786929f2be581da91082ff857c2393da5e597b3/js/implementation.native.js#L13
+                              await copyAsync(
+                                  dirname(require.resolve("invariant")),
+                                  join(outDir, "node_modules", "invariant")
+                              );
 
                               // this is helpful to copy the files and folders to a test project path for dev/testing purposes.
                               if (process.env.MX_PROJECT_PATH) {
