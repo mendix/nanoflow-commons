@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "@react-native-community/async-storage": "1.12.1",
-    "@react-native-community/geolocation": "2.0.2",
+    "@react-native-community/geolocation": "2.1.0",
     "fast-glob": "^3.2.12",
     "invariant": "^2.2.4",
     "js-base64": "~3.7.2",
