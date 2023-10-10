@@ -1,4 +1,3 @@
-/* eslint-disable no-constant-condition */
 const nodefetch = require("node-fetch");
 const { join } = require("path");
 
@@ -20,9 +19,6 @@ main().catch(e => {
 
 async function main() {
     const pkgPath = join(process.cwd(), "package.json");
-    if (1 === 1) {
-        return;
-    }
     const {
         name,
         widgetName,
