@@ -1,20 +1,20 @@
 {
   "name": "@mendix/nanoflow-commons",
   "moduleName": "Nanoflow Commons",
-  "version": "2.6.1",
+  "version": "3.0.0",
   "license": "Apache-2.0",
-  "copyright": "© Mendix Technology BV 2022. All rights reserved.",
+  "copyright": "© Mendix Technology BV 2023. All rights reserved.",
   "repository": {
     "type": "git",
     "url": "https://github.com/mendix/nanoflow-commons.git"
   },
   "marketplace": {
-    "minimumMXVersion": "9.10.0.36429",
-    "marketplaceId": 109515
+    "minimumMXVersion": "9.24.1.4658",
+    "marketplaceId": 109513
   },
   "testProject": {
     "githubUrl": "https://github.com/mendix/native-mobile-resources",
-    "branchName": "main"
+    "branchName": "lts/mx/9.24"
   },
   "scripts": {
     "prepare": "yarn husky install",
